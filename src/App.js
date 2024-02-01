@@ -1,40 +1,65 @@
-import React, { useState, useEffect } from 'react';
+// App.js
+
+import React, { useState } from 'react';
 import TaskList from './TaskList';
 import TaskForm from './TaskForm';
-import TaskDetail from './TaskDetail';
-import axios from 'axios';
+import TaskEdit from './TaskEdit';
 
 const App = () => {
-  const [tasks, setTasks] = useState([]);
-  const [selectedTask, setSelectedTask] = useState(null);
+  const [tasks, setTasks] = useState([
+    { id: 1, title: 'Task 1', completed: false },
+    { id: 2, title: 'Task 2', completed: true },
+  ]);
 
-  useEffect(() => {
-    // Fetch tasks from the backend API
-    axios.get('http://your-backend-api/tasks')
-      .then(response => setTasks(response.data))
-      .catch(error => console.error('Error fetching tasks:', error));
-  }, []);
+  const [editingTask, setEditingTask] = useState(null);
 
-  const handleTaskSelect = (taskId) => {
-    const task = tasks.find(task => task.id === taskId);
-    setSelectedTask(task);
+  const handleEdit = (taskId) => {
+    const taskToEdit = tasks.find(task => task.id === taskId);
+    setEditingTask(taskToEdit);
   };
 
-  const handleTaskCreate = (newTask) => {
-    // Post new task to the backend API
-    axios.post('http://your-backend-api/tasks', newTask)
-      .then(response => setTasks([...tasks, response.data]))
-      .catch(error => console.error('Error creating task:', error));
+  const handleSaveEdit = (taskId, newTitle) => {
+    setTasks(tasks.map(task => 
+      task.id === taskId ? { ...task, title: newTitle } : task
+    ));
+    setEditingTask(null);
   };
 
-  // Implement similar functions for editing, deleting, and marking tasks as completed
+  const handleCancelEdit = () => {
+    setEditingTask(null);
+  };
+
+  const handleDelete = (taskId) => {
+    setTasks(tasks.filter(task => task.id !== taskId));
+  };
+
+  const handleToggleComplete = (taskId) => {
+    setTasks(tasks.map(task =>
+      task.id === taskId ? { ...task, completed: !task.completed } : task
+    ));
+  };
+
+  const handleCreateTask = (title) => {
+    const newTask = { id: tasks.length + 1, title, completed: false };
+    setTasks([...tasks, newTask]);
+  };
 
   return (
     <div>
-      <h1>Task Tracker</h1>
-      <TaskList tasks={tasks} onSelect={handleTaskSelect} />
-      <TaskForm onCreate={handleTaskCreate} />
-      {selectedTask && <TaskDetail task={selectedTask} />}
+      <TaskList
+        tasks={tasks}
+        onEdit={handleEdit}
+        onDelete={handleDelete}
+        onToggleComplete={handleToggleComplete}
+      />
+      <TaskForm onSubmit={handleCreateTask} />
+      {editingTask && (
+        <TaskEdit
+          task={editingTask}
+          onSave={handleSaveEdit}
+          onCancel={handleCancelEdit}
+        />
+      )}
     </div>
   );
 };
