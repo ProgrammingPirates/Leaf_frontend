@@ -1,5 +1,9 @@
 # Task Manager Leap Finance
 
+[Deployed on Netlify (front-end)](https://leapfinance.netlify.app/)
+[Deployed on  Heroku (back-end)](https://leaptask-bc0d81608b33.herokuapp.com/)
+
+
 #### Front-end
 
 - [ReactJS](https://reactjs.org/) - Frontend framework
