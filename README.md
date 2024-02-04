@@ -1,8 +1,11 @@
 # Task Manager Leap Finance
 
-[Deployed on Netlify (front-end)](https://leapfinance.netlify.app/)
+[Deployed on Netlify (front-end)] (https://leapfinance.netlify.app/) 
+
+<di>
 [Deployed on  Heroku (back-end)](https://leaptask-bc0d81608b33.herokuapp.com/)
 
+![image](https://github.com/ProgrammingPirates/Leap_finance_Assissment/assets/78801686/ba25e84b-0e33-4255-8006-bf7cbd73b5bc)
 
 #### Front-end
 
